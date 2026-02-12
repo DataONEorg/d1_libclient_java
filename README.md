@@ -1,6 +1,6 @@
 ## d1_libclient_java: DataONE Java Client Library
 
-- **Authors**: Jones, Matthew B.; Leinfelder, Ben; Berkley, Chad; Nahf, Rob; Tao, Jing
+- **Authors**: Jones, Matthew B.; Leinfelder, Ben; Berkley, Chad; Nahf, Rob; Tao, Jing; Jones, Chris; Walker, Lauren
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
 - [Package source code on GitHub](https://github.com/DataONEorg/d1_libclient_java)
 - [**Submit Bugs and feature requests**](https://github.com/DataONEorg/d1_libclient_java/issues)
