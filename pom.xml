@@ -13,7 +13,7 @@
     <bouncycastle.version>1.52</bouncycastle.version>
     <d1_common_java.version>2.4.2</d1_common_java.version>
     <d1_test_resources.version>2.3.0</d1_test_resources.version>
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>25</maven.compiler.release>
   </properties>
   <repositories>
     <repository>
