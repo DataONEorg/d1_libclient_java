@@ -34,9 +34,9 @@ public class HttpConnectionMonitorService extends Thread {
     WeakHashMap<HttpClientConnectionManager, String> connManStateMap = new WeakHashMap<>();
     WeakHashMap<HttpClient, String> clientStateMap = new WeakHashMap<>();
    
-    private volatile boolean shutdown;
+    private volatile boolean shutdown = false;
 
-    final static Logger logger = Logger.getLogger(HttpConnectionMonitorService.class);
+    private static final Logger logger = Logger.getLogger(HttpConnectionMonitorService.class);
     
     private static class SingletonHolder {
         public static final HttpConnectionMonitorService INSTANCE = new HttpConnectionMonitorService();
