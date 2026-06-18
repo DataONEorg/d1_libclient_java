@@ -258,7 +258,7 @@ public class DataPackageTest {
             
         } catch (RuntimeException e) {
             e.printStackTrace();
-            
+            fail(e.getMessage());
         }
         
 	}
