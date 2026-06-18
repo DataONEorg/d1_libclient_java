@@ -26,12 +26,13 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.dataone.client.rest.RestClient;
 import org.dataone.mimemultipart.SimpleMultipartEntity;
 import org.dataone.service.util.D1Url;
@@ -43,6 +44,10 @@ public class EchoTestRestClientIT {
 	private static String echoNode = "http://dev-testing.dataone.org/testsvc";
 	private static String echoResource = "echo";
 	private static String mmEchoResource = "echomm";
+
+	private RestClient newRestClient() {
+		return new RestClient(HttpClients.createDefault());
+	}
 	
 	@Ignore
 	@Test
@@ -50,10 +55,10 @@ public class EchoTestRestClientIT {
 		D1Url u = new D1Url(echoNode, echoResource);
 		u.addNextPathElement("bizz");
 		u.addNonEmptyParamPair("x", "y");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		HttpResponse resp = rc.doGetRequest(u.getUrl(), null);
 		InputStream is = resp.getEntity().getContent();
-		String contentString = IOUtils.toString(is);
+		String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		System.out.println(contentString);
 		assertTrue("",contentString.contains("request.META[ REQUEST_METHOD ] = GET"));		
 		assertTrue("",contentString.contains("request.META[ PATH_INFO ] = /echo/bizz"));
@@ -67,10 +72,10 @@ public class EchoTestRestClientIT {
 		D1Url u = new D1Url(echoNode, echoResource);
 		u.addNextPathElement("bizz");
 		u.addNonEmptyParamPair("x", "y");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		HttpResponse resp = rc.doDeleteRequest(u.getUrl(), null);
 		InputStream is = resp.getEntity().getContent();
-		String contentString = IOUtils.toString(is);
+		String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		System.out.println(contentString);
 		assertTrue("",contentString.contains("request.META[ REQUEST_METHOD ] = DELETE"));		
 		assertTrue("",contentString.contains("request.META[ PATH_INFO ] = /echo/bizz"));
@@ -83,7 +88,7 @@ public class EchoTestRestClientIT {
 		D1Url u = new D1Url(echoNode, echoResource);
 		u.addNextPathElement("bizz");
 		u.addNonEmptyParamPair("x", "y");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		HttpResponse resp = rc.doHeadRequest(u.getUrl(), null);
 		Header[] headers = resp.getAllHeaders();
 		String hString = new String();
@@ -99,10 +104,10 @@ public class EchoTestRestClientIT {
 		D1Url u = new D1Url(echoNode, echoResource);
 		u.addNextPathElement("bizz");
 		u.addNonEmptyParamPair("x", "y");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		HttpResponse resp = rc.doPutRequest(u.getUrl(),null, null);
 		InputStream is = resp.getEntity().getContent();
-		String contentString = IOUtils.toString(is);
+		String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		System.out.println(contentString);
 		assertTrue("",contentString.contains("request.META[ REQUEST_METHOD ] = PUT"));		
 		assertTrue("",contentString.contains("request.META[ PATH_INFO ] = /echo/bizz"));
@@ -115,10 +120,10 @@ public class EchoTestRestClientIT {
 		D1Url u = new D1Url(echoNode, echoResource);
 		u.addNextPathElement("bizz");
 		u.addNonEmptyParamPair("x", "y");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		HttpResponse resp = rc.doPostRequest(u.getUrl(),null, null);
 		InputStream is = resp.getEntity().getContent();
-		String contentString = IOUtils.toString(is);
+		String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		System.out.println(contentString);
 		assertTrue("",contentString.contains("request.META[ REQUEST_METHOD ] = POST"));		
 		assertTrue("",contentString.contains("request.META[ PATH_INFO ] = /echo/bizz"));
@@ -133,10 +138,10 @@ public class EchoTestRestClientIT {
 		SimpleMultipartEntity ent = new SimpleMultipartEntity();
 		ent.addParamPart("Jabberwocky", "Twas brillig and the slithy tove, did gyre and gimble in the wabe");
 		ent.addFilePart("Jabberwocky2", "All mimsy was the borogrove, and the mome wrath ungrabe.");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		HttpResponse resp = rc.doPutRequest(u.getUrl(),ent, null);
 		InputStream is = resp.getEntity().getContent();
-		String contentString = IOUtils.toString(is);
+		String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		System.out.println(contentString);
 		assertTrue("",contentString.contains("request.META[ CONTENT_TYPE ] = multipart/form-data"));		
 		assertTrue("",contentString.contains("request.REQUEST[ Jabberwocky ] = Twas brillig and the slithy tove, did gyre and gimble in the wabe"));
@@ -153,10 +158,10 @@ public class EchoTestRestClientIT {
 		SimpleMultipartEntity ent = new SimpleMultipartEntity();
 		ent.addParamPart("Jabberwocky", "Twas brillig and the slithy tove, did gyre and gimble in the wabe");
 		ent.addFilePart("Jabberwocky2", "All mimsy was the borogrove, and the mome wrath ungrabe.");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		HttpResponse resp = rc.doPostRequest(u.getUrl(),ent, null);
 		InputStream is = resp.getEntity().getContent();
-		String contentString = IOUtils.toString(is);
+		String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		System.out.println(contentString);
 		assertTrue("",contentString.contains("request.META[ CONTENT_TYPE ] = multipart/form-data"));		
 		assertTrue("",contentString.contains("request.REQUEST[ Jabberwocky ] = Twas brillig and the slithy tove, did gyre and gimble in the wabe"));
@@ -170,11 +175,11 @@ public class EchoTestRestClientIT {
 		D1Url u = new D1Url(echoNode, echoResource);
 		u.addNextPathElement("bizz");
 		u.addNonEmptyParamPair("x", "y");
-		RestClient rc = new RestClient(new DefaultHttpClient());
+		RestClient rc = newRestClient();
 		rc.setHeader("mememe", "momomo");
 		HttpResponse resp = rc.doGetRequest(u.getUrl(), null);
 		InputStream is = resp.getEntity().getContent();
-		String contentString = IOUtils.toString(is);
+		String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		System.out.println(contentString);
 		assertTrue("",contentString.contains("request.META[ REQUEST_METHOD ] = GET"));		
 		assertTrue("",contentString.contains("request.META[ PATH_INFO ] = /echo/bizz"));

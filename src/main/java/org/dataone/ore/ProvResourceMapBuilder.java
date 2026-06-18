@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -49,13 +50,11 @@ import org.dspace.foresite.OREParserFactory;
 import org.dspace.foresite.ORESerialiser;
 import org.dspace.foresite.ORESerialiserException;
 import org.dspace.foresite.ORESerialiserFactory;
-import org.dspace.foresite.Predicate;
 import org.dspace.foresite.ResourceMap;
 import org.dspace.foresite.ResourceMapDocument;
 import org.dspace.foresite.Triple;
 
 import com.hp.hpl.jena.rdf.model.AnonId;
-import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -411,7 +410,7 @@ public class ProvResourceMapBuilder {
         ORESerialiser serialiser = ORESerialiserFactory.getInstance(DEFAULT_RDF_FORMAT);
     	try {
     	    ResourceMapDocument oreDocument = serialiser.serialise(resourceMap);
-    	    InputStream inputStream = IOUtils.toInputStream(oreDocument.toString());
+	    	    InputStream inputStream = IOUtils.toInputStream(oreDocument.toString(), StandardCharsets.UTF_8);
             rdfModel.read(inputStream, null); // TODO: Do we need to handle relative URIs?
             
         } catch (ORESerialiserException e) {

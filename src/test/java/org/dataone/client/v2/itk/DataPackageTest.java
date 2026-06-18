@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,7 +137,7 @@ public class DataPackageTest {
 
                 // Load the result into a model for reading
                 Model rdfModel = ModelFactory.createDefaultModel();
-                InputStream inputStream = IOUtils.toInputStream(rdfXML, "UTF-8");
+                InputStream inputStream = IOUtils.toInputStream(rdfXML, StandardCharsets.UTF_8);
                 rdfModel.read(inputStream, null);
 
                 Resource subjectResource = 
@@ -214,7 +215,7 @@ public class DataPackageTest {
             
             // Load the result into a model for reading
             Model rdfModel = ModelFactory.createDefaultModel();
-            InputStream inputStream = IOUtils.toInputStream(rdfXML, "UTF-8");
+            InputStream inputStream = IOUtils.toInputStream(rdfXML, StandardCharsets.UTF_8);
             rdfModel.read(inputStream, null);
             Resource objectResource = null;
             Selector selector = null;

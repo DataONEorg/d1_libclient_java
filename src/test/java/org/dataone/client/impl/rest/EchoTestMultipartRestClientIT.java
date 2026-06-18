@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -61,7 +62,7 @@ public class EchoTestMultipartRestClientIT {
 		String contentString = null;
 		try {
 			InputStream is = rc.doGetRequest(u.getUrl(), null);
-			contentString = IOUtils.toString(is);
+			contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		} catch (ServiceFailure e) {	
 			contentString = e.getDescription();
 		}
@@ -83,7 +84,7 @@ public class EchoTestMultipartRestClientIT {
 		String contentString = null;
 		try {
 			InputStream is = rc.doDeleteRequest(u.getUrl(), null);
-			contentString = IOUtils.toString(is);
+			contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		} catch (ServiceFailure e) {	
 			contentString = e.getDescription();
 		}
@@ -128,7 +129,7 @@ public class EchoTestMultipartRestClientIT {
 		String contentString = null;
 		try {
 			InputStream is = rc.doPutRequest(u.getUrl(),null, null);
-			contentString = IOUtils.toString(is);
+			contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		} catch (ServiceFailure e) {	
 			contentString = e.getDescription();
 		}
@@ -151,7 +152,7 @@ public class EchoTestMultipartRestClientIT {
 		String contentString = null;
 		try {
 			InputStream is = rc.doPostRequest(u.getUrl(),null, null);
-			contentString = IOUtils.toString(is);
+			contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		} catch (ServiceFailure e) {	
 			contentString = e.getDescription();
 		}
@@ -176,7 +177,7 @@ public class EchoTestMultipartRestClientIT {
 		String contentString = null;
 		try {
 			InputStream is = rc.doPutRequest(u.getUrl(),ent, null);
-			contentString = IOUtils.toString(is);
+			contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		} catch (ServiceFailure e) {	
 			contentString = e.getDescription();
 		}
@@ -201,7 +202,7 @@ public class EchoTestMultipartRestClientIT {
 		String contentString = null;
 		try {
 			InputStream is = rc.doPostRequest(u.getUrl(),ent, null);
-			contentString = IOUtils.toString(is);
+			contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 		} catch (ServiceFailure e) {	
 			contentString = e.getDescription();
 		}
@@ -223,7 +224,7 @@ public class EchoTestMultipartRestClientIT {
 
 		try {
 			InputStream is = rc.doGetRequest(u.getUrl(), null);
-			String contentString = IOUtils.toString(is);
+			String contentString = IOUtils.toString(is, StandardCharsets.UTF_8);
 			System.out.println(contentString);
 			fail("should not have reached here");
 		} catch (NotFound e) {

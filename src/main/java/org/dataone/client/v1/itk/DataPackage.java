@@ -26,12 +26,12 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -466,7 +466,7 @@ public class DataPackage {
     	D1Object packageObject = D1Object.download(pid);
     	
     	if (packageObject.getFormatId().getValue().equals("http://www.openarchives.org/ore/terms")) {
-    		String resourceMap = IOUtils.toString(packageObject.getDataSource().getInputStream());
+            String resourceMap = IOUtils.toString(packageObject.getDataSource().getInputStream(), StandardCharsets.UTF_8);
         	return deserializePackage(resourceMap);    		
     	}
     	throw new InvalidRequest("0000","The identifier does not represent a DataPackage (is not an ORE resource map)");

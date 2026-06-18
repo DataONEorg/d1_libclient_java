@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,16 +19,13 @@ import org.dataone.configuration.Settings;
 import org.dataone.service.types.v1.Identifier;
 import org.dataone.vocabulary.PROV;
 import org.dataone.vocabulary.ProvONE;
-import org.dataone.vocabulary.ProvONE_V1;
 import org.dspace.foresite.OREException;
-import org.dspace.foresite.ORESerialiserException;
 import org.dspace.foresite.Predicate;
 import org.dspace.foresite.ResourceMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -36,7 +34,6 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Selector;
 import com.hp.hpl.jena.rdf.model.SimpleSelector;
-import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -167,7 +164,7 @@ public class ProvResourceMapBuilderTest {
             System.out.println(rdfXML); // Print it
             
             Model rdfModel = ModelFactory.createDefaultModel();
-            InputStream inputStream = IOUtils.toInputStream(rdfXML, "UTF-8");
+            InputStream inputStream = IOUtils.toInputStream(rdfXML, StandardCharsets.UTF_8);
             rdfModel.read(inputStream, null);
             Resource subjectResource = null;
             Property property = null;

@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
 import javax.activation.DataSource;
@@ -38,7 +39,6 @@ import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.io.IOUtils;
 import org.dataone.client.types.AccessPolicyEditor;
-import org.dataone.client.v2.itk.D1Object;
 import org.dataone.client.v1.types.D1TypeBuilder;
 import org.dataone.service.exceptions.InvalidRequest;
 import org.dataone.service.exceptions.NotFound;
@@ -223,7 +223,7 @@ public class D1ObjectTest {
 				D1TypeBuilder.buildFormatIdentifier("text/csv"),
 				D1TypeBuilder.buildSubject("submitterMe"),
 				D1TypeBuilder.buildNodeReference("someMN"));
-		assertTrue(IOUtils.toString(d.getDataSource().getInputStream()).equals("someData"));	
+		assertTrue(IOUtils.toString(d.getDataSource().getInputStream(), StandardCharsets.UTF_8).equals("someData"));	
 	}
 	
 	
@@ -236,7 +236,7 @@ public class D1ObjectTest {
 				D1TypeBuilder.buildSubject("submitterMe"),
 				D1TypeBuilder.buildNodeReference("someMN"));
 		d.setDataSource(new ByteArrayDataSource("someOtherData".getBytes(),null));
-		assertTrue(IOUtils.toString(d.getDataSource().getInputStream()).equals("someOtherData"));
+		assertTrue(IOUtils.toString(d.getDataSource().getInputStream(), StandardCharsets.UTF_8).equals("someOtherData"));
 		
 	}
 	
@@ -260,7 +260,7 @@ public class D1ObjectTest {
 					D1TypeBuilder.buildSubject("submitterMe"),
 					D1TypeBuilder.buildNodeReference("someMN"));
 
-			assertTrue(IOUtils.toString(d.getDataSource().getInputStream()).equals("someData"));	
+			assertTrue(IOUtils.toString(d.getDataSource().getInputStream(), StandardCharsets.UTF_8).equals("someData"));	
 		} finally {
 			dataFile.delete();
 		}
