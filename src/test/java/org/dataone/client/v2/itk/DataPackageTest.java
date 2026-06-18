@@ -34,13 +34,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.dataone.client.exception.ClientSideException;
-import org.dataone.client.v2.itk.DataPackage;
 import org.dataone.client.v1.types.D1TypeBuilder;
 import org.dataone.configuration.Settings;
 import org.dataone.ore.ResourceMapFactory;
@@ -58,7 +55,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.hp.hpl.jena.rdf.model.AnonId;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
@@ -220,8 +216,6 @@ public class DataPackageTest {
             Model rdfModel = ModelFactory.createDefaultModel();
             InputStream inputStream = IOUtils.toInputStream(rdfXML, "UTF-8");
             rdfModel.read(inputStream, null);
-            Resource subjectResource = null;
-            Property property = null;
             Resource objectResource = null;
             Selector selector = null;
             StmtIterator statements = null;
@@ -301,7 +295,6 @@ public class DataPackageTest {
 		
 		//Create the derived resources
 		//A resource map
-		Identifier resourceMapId = D1TypeBuilder.buildIdentifier("resouceMap.1.1");
 		//Metadata
 		Identifier metadataId = D1TypeBuilder.buildIdentifier("meta.1.1");
 		//One derived data 
@@ -325,9 +318,7 @@ public class DataPackageTest {
 		dataPackage.insertRelationship(metadataId, dataIds);
 		
 		//Create the primary resources
-		Identifier primaryDataId = D1TypeBuilder.buildIdentifier("primaryData.1.1");
         URI primaryDataURI = new URI(D1_URI_PREFIX + "primaryData.1.1");
-		Identifier primaryDataId2 = D1TypeBuilder.buildIdentifier("primaryData.2.1"); 
         URI primaryDataURI2 = new URI(D1_URI_PREFIX + "primaryData.2.1");
 				
 		//Create a list of ids of the primary data resources
@@ -424,7 +415,7 @@ public class DataPackageTest {
         Predicate predicate = new Predicate();
         predicate.setName(property.getLocalName());
         predicate.setNamespace(property.getNameSpace());
-        if ( prefix != null || ! prefix.isEmpty() ) {
+        if (prefix != null && !prefix.isEmpty()) {
             predicate.setPrefix(prefix);
             
         }

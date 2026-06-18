@@ -12,7 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <bouncycastle.version>1.52</bouncycastle.version>
     <d1_common_java.version>2.4.3-SNAPSHOT</d1_common_java.version>
-    <d1_test_resources.version>2.3.0</d1_test_resources.version>
+    <d1_test_resources.version>2.4.0-SNAPSHOT</d1_test_resources.version>
     <maven.compiler.release>25</maven.compiler.release>
   </properties>
   <repositories>
@@ -65,14 +65,14 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.7</version>
+      <version>[4.13.1,)</version>
       <type>jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
