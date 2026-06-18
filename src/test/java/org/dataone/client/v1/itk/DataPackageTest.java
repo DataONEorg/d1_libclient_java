@@ -170,7 +170,7 @@ public class DataPackageTest {
                 e.printStackTrace();
                 fail(e.getMessage());
 
-            } catch (IOException e) {
+            } catch (RuntimeException e) {
                 e.printStackTrace();
                 fail(e.getMessage());
 
@@ -261,7 +261,7 @@ public class DataPackageTest {
         } catch (ORESerialiserException e) {
             e.printStackTrace();
             
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             
         }
