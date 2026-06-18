@@ -46,7 +46,6 @@ import java.security.SignatureException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -82,12 +81,12 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1UTF8String;
 import org.bouncycastle.asn1.DEROctetString;
-import org.bouncycastle.asn1.DERUTF8String;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.provider.X509CertificateObject;
 import org.bouncycastle.openssl.PEMDecryptorProvider;
 import org.bouncycastle.openssl.PEMEncryptedKeyPair;
 import org.bouncycastle.openssl.PEMKeyPair;
@@ -102,7 +101,6 @@ import org.dataone.service.types.v1.Subject;
 import org.dataone.service.types.v1.SubjectInfo;
 import org.dataone.service.types.v1.util.ChecksumUtil;
 import org.dataone.service.util.TypeMarshaller;
-import org.dataone.exceptions.MarshallingException;
 
 /**
  * Import and manage certificates to be used for authentication against DataONE
@@ -159,7 +157,9 @@ public class CertificateManager extends Observable {
     // BouncyCastle added to be able to get the private key and certificate from the PEM
     // TODO: find a way to do this with default Java provider (not Bouncy Castle)?
     static {
-        Security.addProvider(new BouncyCastleProvider());
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
     }
 
     private static String CILOGON_OID_SUBJECT_INFO = null;
@@ -417,7 +417,7 @@ public class CertificateManager extends Observable {
                 log.debug("pemObject: " + pemObject);
                 if (pemObject instanceof X509CertificateHolder) {
                 	X509CertificateHolder holder = (X509CertificateHolder) pemObject;
-    				X509CertificateObject certificate = new X509CertificateObject(holder.toASN1Structure());
+					X509Certificate certificate = toX509Certificate(holder);
 
                     String alias = certificate.getSubjectX500Principal().getName();
                     log.debug("alias: " + alias);
@@ -433,7 +433,7 @@ public class CertificateManager extends Observable {
             log.error(e.getMessage() + " after loading " + count + " certificates", e);
         } catch (IOException e) {
             log.error(e.getMessage() + " after loading " + count + " certificates", e);
-        } catch (CertificateParsingException e) {
+        } catch (CertificateException e) {
             log.error(e.getMessage() + " after loading " + count + " certificates", e);
 		} finally {
             IOUtils.closeQuietly(pemReader);
@@ -529,6 +529,18 @@ public class CertificateManager extends Observable {
     }
 
     /**
+     * Extract the X509Certificate from the X509CertificateHolder
+     * @param holder the certificate holder
+     * @return X509Certificate the certificate
+     * @throws CertificateException
+     */
+    private X509Certificate toX509Certificate(X509CertificateHolder holder) throws CertificateException {
+        JcaX509CertificateConverter converter = new JcaX509CertificateConverter();
+        converter.setProvider(BouncyCastleProvider.PROVIDER_NAME);
+        return converter.getCertificate(holder);
+    }
+
+    /**
      * Retrieves the extension value given by the OID
      * @see http://stackoverflow.com/questions/2409618/how-do-i-decode-a-der-encoded-string-in-java
      * @param X509Certificate
@@ -544,8 +556,8 @@ public class CertificateManager extends Observable {
             if (derObject instanceof DEROctetString) {
                 DEROctetString derOctetString = (DEROctetString) derObject;
                 derObject = toDERObject(derOctetString.getOctets());
-                if (derObject instanceof DERUTF8String) {
-                    DERUTF8String s = DERUTF8String.getInstance(derObject);
+                if (derObject instanceof ASN1UTF8String) {
+                    ASN1UTF8String s = ASN1UTF8String.getInstance(derObject);
                     decoded = s.getString();
                 }
             }
@@ -1003,7 +1015,6 @@ public class CertificateManager extends Observable {
 
 
         // choose to use the default as is, or make an augmented trust manager with additional entries
-        // TODO: remove the System.out.println statements in the TrustManager
         if (trustStoreIncludesD1CAs) {
             log.info("creating custom TrustManager");
 
@@ -1222,8 +1233,8 @@ public class CertificateManager extends Observable {
                 } else if (pemObject instanceof X509CertificateHolder) {
                     X509CertificateHolder holder = (X509CertificateHolder) pemObject;
                     try {
-                        certificate = new X509CertificateObject(holder.toASN1Structure());
-                    } catch (CertificateParsingException e) {
+                        certificate = toX509Certificate(holder);
+                    } catch (CertificateException e) {
                         log.warn("Could not parse x509 certificate", e);
                     }
                 }
@@ -1297,9 +1308,9 @@ public class CertificateManager extends Observable {
             	if (pemObject instanceof X509CertificateHolder) {
                 	X509CertificateHolder holder = (X509CertificateHolder) pemObject;
     				try {
-						certificate = new X509CertificateObject(holder.toASN1Structure());
+                        certificate = toX509Certificate(holder);
 						break;
-					} catch (CertificateParsingException e) {
+                    } catch (CertificateException e) {
 						log.warn("could not parse certificate", e);
 					}
             	}
