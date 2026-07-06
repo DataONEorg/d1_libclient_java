@@ -11,7 +11,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <bouncycastle.version>1.84</bouncycastle.version>
-    <d1_common_java.version>2.4.3-SNAPSHOT</d1_common_java.version>
+    <d1_common_java.version>2.5.0-SNAPSHOT</d1_common_java.version>
     <d1_test_resources.version>2.4.0-SNAPSHOT</d1_test_resources.version>
     <maven.compiler.release>25</maven.compiler.release>
   </properties>
@@ -192,8 +192,9 @@
   </distributionManagement>
   <licenses>
     <license>
-      <name>Apache License, Version 2.0</name>
-      <url>LICENSE.txt</url>
+      <name>The Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
     </license>
   </licenses>
   <scm>
