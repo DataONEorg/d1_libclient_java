@@ -1,5 +1,9 @@
 # d1_libclient_java Release Notes
 
+## 2.4.1 (2026-08-19)
+
+- Intent: Deliver a patch release updating `d1_common_java` to version [2.5.1](https://github.com/DataONEorg/d1_common_java/releases/tag/2.5.1).
+
 ## 2.4.0 (2026-07-06)
 
 - Intent: Deliver a modernization and maintenance release aligned with current Java runtimes and the current d1_common_java line.
